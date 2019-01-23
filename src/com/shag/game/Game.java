@@ -15,6 +15,8 @@ public class Game {
 	private Shader shader;
 	private Transform transform;
 	private Camera camera;
+	double temp=0.0f;
+	float tempAmount=0.0f;
 
 	public Game() {
 		mesh=new Mesh();
@@ -22,12 +24,12 @@ public class Game {
 		shader=new Shader();
 		camera=new Camera(new Vector3(), new Vector3(0,0,-1),new Vector3(0,1,0),1000,0.1f,70f);
 		transform=new Transform();
+		transform.SetScale(new Vector3(0.5f,0.5f,0.5f));
 
 		shader.addVertexShader(ShaderLoader.loadShader("basicVertex.vs"));
 		shader.addFragmentShader(ShaderLoader.loadShader("basicFragment.fs"));
 		shader.compileShader();
 		shader.addUniforms("transform");
-		//shader.addUniforms("uniformFloat");
 	}
 	
 	private void AddVertices() {
@@ -41,7 +43,9 @@ public class Game {
 	}
 	
 	public void Update() {
-		
+		temp+=0.0001;
+		tempAmount=(float)Math.sin(temp);
+		transform.SetPosition(new Vector3(tempAmount,0,0));
 	}
 	
 	
@@ -52,11 +56,11 @@ public class Game {
 	public void Render() {
 		shader.bind();
 		Matrix4 modleMatrix=transform.GetModleMatrix();
-		Matrix4 projectionMatrix=camera.GetProjectionMatrix();
-		Matrix4 viewMatrix=camera.GetViewMatrix();
+//		Matrix4 projectionMatrix=camera.GetProjectionMatrix();
+//		Matrix4 viewMatrix=camera.GetViewMatrix();
 		
-		Matrix4 m1=projectionMatrix.Mul(viewMatrix);
-		Matrix4 m=modleMatrix.Mul(m1);
+//		Matrix4 m1=projectionMatrix.Mul(viewMatrix);
+//		Matrix4 m=modleMatrix.Mul(m1);
 
 		shader.setUniform("transform", modleMatrix);
 		

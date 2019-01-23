@@ -69,6 +69,7 @@ public class MainComponent {
 				if(Window.isCloseRequested()) {
 					stop();
 				}
+				update();
 				Time.setDelta(frameCounter);
 //				if(frameCounter>=Time.SECOND) {
 				if(frameCounter>=1.0f) {
@@ -93,6 +94,10 @@ public class MainComponent {
 		}
 		
 		cleanUp();
+	}
+	
+	public void update() {
+		game.Update();
 	}
 	
 	

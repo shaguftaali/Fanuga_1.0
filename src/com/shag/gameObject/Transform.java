@@ -70,13 +70,21 @@ public class Transform {
 	
 	private void SetModleMatrix() {
 		  Vector3 radian = rotation.Mul(Constant.PI/ 180.0f);
-		   Matrix4 TranslationMat=new Matrix4(
-		    
-		        new Vector4(1,0,0,0),
-		        new Vector4(0,1,0,0),
-		        new Vector4(0,0,1,0),
-		        new Vector4(position.x,position.y,position.z,1)
-		    );
+//		   Matrix4 TranslationMat=new Matrix4(
+//		    
+//		        new Vector4(1,0,0,0),
+//		        new Vector4(0,1,0,0),
+//		        new Vector4(0,0,1,0),
+//		        new Vector4(position.x,position.y,position.z,1)
+//		    );
+		  
+		  Matrix4 TranslationMat=new Matrix4(
+				    
+			        new Vector4(1,0,0,position.x),
+			        new Vector4(0,1,0,position.y),
+			        new Vector4(0,0,1,position.z),
+			        new Vector4(0,0,0,         1)
+			    );
 
 		     Matrix4 ScalMat=new Matrix4(
 		    
@@ -89,23 +97,23 @@ public class Transform {
 		     Matrix4 X_RotationMat=new Matrix4(
 		    
 		    	 new Vector4(1,              			 0,              			0, 0),
-		    	 new Vector4(0,  (float)Math.cos(radian.x), (float)Math.sin(radian.x), 0),
-		    	 new Vector4(0, -(float)Math.sin(radian.x),(float) Math.cos(radian.x), 0),
+		    	 new Vector4(0, (float)Math.cos(radian.x),-(float)Math.sin(radian.x), 0),
+		    	 new Vector4(0, (float)Math.sin(radian.x),(float) Math.cos(radian.x), 0),
 		    	 new Vector4(0,              			 0,                         0, 1)
 		    );
 
 		    Matrix4 Y_RotationMat=new Matrix4(
 		    
-		    	new Vector4((float)Math.cos(radian.y), 0, -(float)Math.sin(radian.y), 0),
-		    	new Vector4(						0, 1,                          0, 0),
-		    	new Vector4((float)Math.sin(radian.y), 0,  (float)Math.cos(radian.y), 0),
-		    	new Vector4(						0, 0,                          0, 1)
+		    	new Vector4( (float)Math.cos(radian.y), 0, (float)Math.sin(radian.y), 0),
+		    	new Vector4(						 0, 1,                         0, 0),
+		    	new Vector4(-(float)Math.sin(radian.y), 0, (float)Math.cos(radian.y), 0),
+		    	new Vector4(						 0, 0,                         0, 1)
 		    );
 
 		    Matrix4 Z_RotationMat=new Matrix4(
 		    
-		    	new Vector4( (float)Math.cos(radian.z), (float)Math.sin(radian.z), 0, 0),
-		    	new Vector4(-(float)Math.sin(radian.z), (float)Math.cos(radian.z), 0, 0),
+		    	new Vector4( (float)Math.cos(radian.z), -(float)Math.sin(radian.z), 0, 0),
+		    	new Vector4((float)Math.sin(radian.z), (float)Math.cos(radian.z), 0, 0),
 		    	new Vector4(						 0,             			0, 1, 0),
 		    	new Vector4(						 0,			    			0, 0, 1)
 		    );
