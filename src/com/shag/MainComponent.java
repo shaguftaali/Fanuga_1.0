@@ -97,6 +97,7 @@ public class MainComponent {
 	}
 	
 	public void update() {
+		game.Input();
 		game.Update();
 	}
 	

@@ -1,5 +1,7 @@
 package com.shag.game;
 
+import org.lwjgl.input.Keyboard;
+
 import com.shag.Math.Matrix4;
 import com.shag.Math.Vector3;
 import com.shag.Math.Vector4;
@@ -8,6 +10,7 @@ import com.shag.geometry.Vertex;
 import com.shag.graphics.Mesh;
 import com.shag.resourceLoader.ShaderLoader;
 import com.shag.shader.Shader;
+import com.shag.inputSystem.*;
 
 public class Game {
 	
@@ -43,14 +46,27 @@ public class Game {
 	}
 	
 	public void Update() {
-		temp+=0.0001;
-		tempAmount=(float)Math.sin(temp);
+//		temp+=0.0001;
+//		tempAmount=(float)Math.sin(temp);
 		transform.SetPosition(new Vector3(tempAmount,0,0));
 	}
 	
 	
 	public void Input() {
+		Input.update();
+//		System.out.println("Input");
+		if(Input.getKeyDown(Keyboard.KEY_SPACE)) {
+			System.out.println("We have just pressed up");
+		}
 		
+		if(Input.getKey(Input.KEY_D)) {
+			tempAmount+=0.0001;
+		}
+		else if(Input.getKey(Input.KEY_A)) {
+			tempAmount-=0.0001;
+		}
+		
+//		transform.SetPosition(new Vector3(tempAmount,0,0));
 	}
 	
 	public void Render() {
