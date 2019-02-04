@@ -3,6 +3,7 @@ package com.shag;
 import com.shag.game.Game;
 import com.shag.game.window.RenderUtil;
 import com.shag.game.window.Window;
+import com.shag.networking.client.Client;
 import com.shag.time.Time;
 
 public class MainComponent {
@@ -113,9 +114,10 @@ public class MainComponent {
 	}
 
 	public static void main(String[] args) {
-		Window.creatreWindow(WIDTH, HEIGHT, TITLE);
-		MainComponent game=new MainComponent();
-		game.start();
+//		Window.creatreWindow(WIDTH, HEIGHT, TITLE);
+//		MainComponent game=new MainComponent();
+//		game.start();
+		Client client=new Client("Shag", "localhost", 9999);
 
 	}
 
