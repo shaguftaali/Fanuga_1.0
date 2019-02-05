@@ -23,10 +23,12 @@ public class LoginWindow extends JFrame {
 	private JTextField txtAddress;
 	private JTextField txtPort;
 
+	MainComponent main;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
+	public static  void LoginMain() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -39,9 +41,15 @@ public class LoginWindow extends JFrame {
 		});
 	}
 	
+	public void register(MainComponent callback) {
+//		callback.OnLoginBtnClick();
+		main=callback;
+	}
+	
 	private void login(String name, String address,int port) {
 		dispose();
-		new ClientWindwo(name, address, port);
+		main.OnLoginBtnClick();
+//		new ClientWindwo(name, address, port);
 		System.out.println(name+" , "+address+" , "+port);
 	}
 
@@ -49,6 +57,7 @@ public class LoginWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginWindow() {
+		System.out.println("login Window");
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 406, 444);

@@ -6,7 +6,7 @@ import com.shag.game.window.Window;
 import com.shag.networking.client.Client;
 import com.shag.time.Time;
 
-public class MainComponent {
+public class MainComponent implements LoginWindowCallBack {
 	
 	public static final int WIDTH=800;
 	public static final int HEIGHT=600;
@@ -18,10 +18,14 @@ public class MainComponent {
 	private Game game;
 	
 	public MainComponent() {
-		RenderUtil.initGraphics();
-		isRunning=false;
-		game=new Game();
+//		RenderUtil.initGraphics();
+//		
+//		isRunning=false;
+//		game=new Game();
+//		start();
 		
+		
+//		
 	}
 	
 	public void start() {
@@ -115,10 +119,23 @@ public class MainComponent {
 
 	public static void main(String[] args) {
 //		Window.creatreWindow(WIDTH, HEIGHT, TITLE);
-//		MainComponent game=new MainComponent();
-//		game.start();
-		Client client=new Client("Shag", "localhost", 9999);
+//		LoginWindow frame = new LoginWindow();
+//		frame.setVisible(true);
+		MainComponent game=new MainComponent();
+//		frame.register(game);
+		game.OnLoginBtnClick();
 
+	}
+
+	@Override
+	public void OnLoginBtnClick() {
+		System.out.println("lofin click");
+		Window.creatreWindow(WIDTH, HEIGHT, TITLE);
+		RenderUtil.initGraphics();
+		isRunning=false;
+		game=new Game();
+		start();
+		
 	}
 
 }
