@@ -98,14 +98,13 @@ public class Server implements Runnable{
 	}
 	
 	private void process(DatagramPacket packet) {
-		String string=new String(packet.getData());
+		String s1=new String(packet.getData());
+//		String string=new String(packet.getData());
+		String string=s1.substring(0, packet.getLength());
 		System.out.println("server data recived : "+string);
 		if(string.startsWith("/c/")) {
-			int id=UniqueIdentifier.getIdentifier();
-			ServerClient client=new ServerClient(string.substring(3,string.length()),packet.getAddress(),packet.getPort(),id);
-			clients.add(client);
-			String ID="/c/"+id;
-			send(ID,packet.getAddress(),packet.getPort());
+
+			OnNewClientAdded(string, packet);
 		}
 		else if(string.startsWith("/m/")) {
 			sendMessageToAll(string);
@@ -122,6 +121,23 @@ public class Server implements Runnable{
 		}
 	}
 	
+	void OnNewClientAdded(String string, DatagramPacket packet) {
+		String[] split=string.split("/-/");
+		String name=split[0].substring(3, split[0].length());
+		int id=Integer.parseInt(split[1]);
+		System.out.println("server : id "+id);
+
+		
+		ServerClient client=new ServerClient(string.substring(3,string.length()),packet.getAddress(),packet.getPort(),id);
+		clients.add(client);
+		String ID="/c/"+id;
+		send("/c/",packet.getAddress(),packet.getPort());
+		
+//		String name=string.substring(3, string.length());
+		String dataToSend="/a/"+name+"-"+ID;
+		sendMessageToAll(dataToSend);
+	}
+	
 	private void send(String message, InetAddress address,int port) {
 		message+="/e/";
 		send(message.getBytes(),address,port);
@@ -133,6 +149,8 @@ public class Server implements Runnable{
 			send(message.getBytes(),client.address,client.port);
 		}
 	}
+	
+//	private void sendNewClientAdditionMessage(String message,ServerClient addedClie)
 	
 	private void send(final byte[] data, InetAddress address, int port) {
 		send=new Thread("send") {

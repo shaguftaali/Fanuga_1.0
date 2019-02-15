@@ -48,16 +48,16 @@ public class LoginWindow extends JFrame {
 	
 	private void login(String name, String address,int port) {
 		dispose();
-		main.OnLoginBtnClick();
+//		System.out.println(name+" , "+address+" , "+port);
+		main.OnLoginBtnClick(name, address, port);
 //		new ClientWindwo(name, address, port);
-		System.out.println(name+" , "+address+" , "+port);
 	}
 
 	/**
 	 * Create the frame.
 	 */
 	public LoginWindow() {
-		System.out.println("login Window");
+//		System.out.println("login Window");
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 406, 444);

@@ -7,7 +7,11 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-public class Client {
+import com.shag.MainComponent;
+import com.shag.game.Player;
+import com.shag.untils.UniqueIdentifier;
+
+public class Client implements Runnable {
 	
 	private String name;
 	private String address;
@@ -19,26 +23,39 @@ public class Client {
 	private int ID;
 	private boolean running;
 	
+	volatile MainComponent game;
 	
 
-	public Client(String name, String address, int port) {
+	public Client(String name, String address, int port, MainComponent game) {
 		this.name=name;
 		this.address=address;
 		this.port=port;
-//		boolean connect=openConnection(address, port);
-//		System.out.println(("connection "+connect));
-//		if(!connect) {
-//			System.err.println("Connection failed");
-////			console("Connection Failed");
-//		}
-//		running=true;
-//		run=new Thread("Client Running");
-//		run.start();
+		boolean connect=openConnection(address, port);
+		System.out.println(("connection "+connect));
+		if(!connect) {
+			System.err.println("Connection failed");
+		}
+		ID=UniqueIdentifier.getIdentifier();
+		
+		System.out.println("client : ID : "+ID);
+		String connection="/c/"+name+"/-/"+ID;
+//		System.out.println(connection);
+//		String s[]=connection.split("-");
+//		int id=Integer.parseInt(s[1]);
+//		System.out.println(s.length+" , "+id);
+		
+		send(connection.getBytes());
+		running=true;
+		this.game=game;
+		run=new Thread(this,"Client Running");
+		run.start();
+		
 	}
 	
-//	public void run() {
-//		listen();
-//	}
+	public void run() {
+		System.out.println("run");
+		listen();
+	}
 	
 	public String getName() {
 		return name;
@@ -52,30 +69,45 @@ public class Client {
 		return port;
 	}
 	
-//	public void listen() {
-//		listen=new Thread("Listen") {
-//			public void run() {
-//				while(running) {
-//					String message=recive();
-//					if(message.startsWith("/c")) {
+	public void listen() {
+		listen=new Thread("Listen") {
+			public void run() {
+				while(running) {
+					System.out.println("client");
+					String message=recive();
+					if(message.startsWith("/c")) {
 //						ID=Integer.parseInt(message.split("/c/|/e/")[1]);
-//						System.out.println("Successfully Connected to server! ID : "+getID());
-//					}
-//					else if(message.startsWith("/m/")) {
-//						String text = message.substring(3);
-//						text=text.split("/e/")[0];
-//						System.out.println(text);
-//					}
-//					else if(message.startsWith("/i/")) {
-//						String text="/i/"+getID()+"/e/";
-//						System.out.println("client : listening");
-//						send(text, false);
-//					}
-//				}
-//			}
-//		};
-//		listen.start();
-//	}
+						System.out.println("Successfully Connected to server! ID : "+getID());
+						game.OnSuccessfullConnection(name, ID, true);
+					}
+					else if(message.startsWith("/m/")) {
+						String text = message.substring(3);
+						text=text.split("/e/")[0];
+						System.out.println(text);
+					}
+					else if(message.startsWith("/i/")) {
+						String text="/i/"+getID()+"/e/";
+						System.out.println("client : listening");
+						send(text, false);
+					}
+					else if(message.startsWith("/a/")) {
+						System.out.println("client : new player added");
+						String msg=message.substring(3, message.length());
+						NewClientAdded(msg);
+					}
+					
+				}
+			}
+		};
+		listen.start();
+	}
+	
+	private void NewClientAdded(String message) {
+		String[] msg = message.split("/y/");
+		String name= msg[0];
+		int ID=Integer.parseInt(msg[1]);
+		game.game.AddNewPlayer(name, ID, false);
+	}
 	
 	public boolean openConnection(String address, int port) {
 		System.out.println("add "+address+"\t"+port);

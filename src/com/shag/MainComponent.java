@@ -6,6 +6,7 @@ import com.shag.game.window.Window;
 import com.shag.networking.client.Client;
 import com.shag.serialization.SerializationTest;
 import com.shag.time.Time;
+import com.shag.untils.UniqueIdentifier;
 
 public class MainComponent implements LoginWindowCallBack {
 	
@@ -16,7 +17,9 @@ public class MainComponent implements LoginWindowCallBack {
 	
 	private boolean isRunning;
 	
-	private Game game;
+	public Game game;
+	
+	Client client;
 	
 	public MainComponent() {
 //		RenderUtil.initGraphics();
@@ -119,45 +122,46 @@ public class MainComponent implements LoginWindowCallBack {
 	}
 
 	@Override
-	public void OnLoginBtnClick() {
-		System.out.println("lofin click");
-		Window.creatreWindow(WIDTH, HEIGHT, TITLE);
-		RenderUtil.initGraphics();
-		isRunning=false;
-		game=new Game();
-		start();
+	public void OnLoginBtnClick(String name, String address, int port) {
+//		System.out.println("lofin click");
+//		Window.creatreWindow(WIDTH, HEIGHT, TITLE);
+//		game=new Game();
+		client=new Client(name, address, port,this);
+//		RenderUtil.initGraphics();
+//		isRunning=false;
+//		start();
+		
 		
 	}
 	
-	
-	public static void main1(String[] args) {
-//		Window.creatreWindow(WIDTH, HEIGHT, TITLE);
-//		LoginWindow frame = new LoginWindow();
-//		frame.setVisible(true);
-		MainComponent game=new MainComponent();
-//		frame.register(game);
-		game.OnLoginBtnClick();
-
+	public void OnSuccessfullConnection(String name, int ID, boolean isOwn) {
+		Window.creatreWindow(WIDTH, HEIGHT, TITLE);
+		RenderUtil.initGraphics();
+		game=new Game();
+		game.CreatePlayer(name, ID, isOwn);
+		isRunning=false;
+		start();
 	}
+	
 	
 	public static void main(String[] args) {
-		int value=1200;
-		int b=0xff00;
-		int a=(value & b );
-////		System.out.println(a);
-//		printBin(value);
-////		printHex(value);
-//		printBin(b);
-//		printBin(a);
-//		printHex(a);
-//		a=a>>8;
-//		printHex(a);
-//		printBin(a);
-		SerializationTest.Test1();
+//		Window.creatreWindow(WIDTH, HEIGHT, TITLE);
+		LoginWindow frame = new LoginWindow();
+		frame.setVisible(true);
+		MainComponent game=new MainComponent();
+		frame.register(game);
+//		game.OnLoginBtnClick();
 
-				
 	}
-
+	
+//	public static void main(String[] args) {
+//		String name="shag";
+//		String string=name+"-"+UniqueIdentifier.getIdentifier();
+//		System.out.println("string "+string);
+//		String s[]=string.split("-");
+//		int id=Integer.parseInt(s[1]);
+//		System.out.println(s.length+" , "+id);;
+//	}
 	
 	public static void printHex(int value) {
 		System.out.printf("%x\n",value);
@@ -167,10 +171,5 @@ public class MainComponent implements LoginWindowCallBack {
 		System.out.println(Integer.toBinaryString(value));
 	}
 	
-	public static void printBytes(byte[] data) {
-		for(int i=0; i<data.length; i++) {
-			System.out.printf("ox%x", data[i]);
-		}
-	}
-
+	
 }

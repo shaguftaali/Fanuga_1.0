@@ -1,5 +1,5 @@
 package com.shag;
 
 public interface LoginWindowCallBack {
-	void OnLoginBtnClick();
+	void OnLoginBtnClick(String name, String address, int port);
 }

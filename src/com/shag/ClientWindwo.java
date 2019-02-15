@@ -68,7 +68,7 @@ public class ClientWindwo extends JFrame implements Runnable {
 	public ClientWindwo(String name, String address, int port) {
 		setTitle("Chat window");
 //		MainComponent main=new MainComponent();
-		client=new Client(name,address,port);
+//		client=new Client(name,address,port);
 		boolean connect=client.openConnection(address, port);
 		if(!connect) {
 			System.err.println("Connection failed");
