@@ -131,10 +131,11 @@ public class Server implements Runnable{
 		ServerClient client=new ServerClient(string.substring(3,string.length()),packet.getAddress(),packet.getPort(),id);
 		clients.add(client);
 		String ID="/c/"+id;
-		send("/c/",packet.getAddress(),packet.getPort());
+		//send("/c/",packet.getAddress(),packet.getPort());
 		
 //		String name=string.substring(3, string.length());
-		String dataToSend="/a/"+name+"-"+ID;
+		String dataToSend="/a/"+name+"/-/"+id;
+		System.out.println("server data to send : "+dataToSend);
 		sendMessageToAll(dataToSend);
 	}
 	

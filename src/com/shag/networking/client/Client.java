@@ -73,12 +73,12 @@ public class Client implements Runnable {
 		listen=new Thread("Listen") {
 			public void run() {
 				while(running) {
-					System.out.println("client");
 					String message=recive();
+					System.out.println("client recive msg "+message);
 					if(message.startsWith("/c")) {
 //						ID=Integer.parseInt(message.split("/c/|/e/")[1]);
 						System.out.println("Successfully Connected to server! ID : "+getID());
-						game.OnSuccessfullConnection(name, ID, true);
+//						game.OnSuccessfullConnection(name, ID, true);
 					}
 					else if(message.startsWith("/m/")) {
 						String text = message.substring(3);
@@ -91,7 +91,7 @@ public class Client implements Runnable {
 						send(text, false);
 					}
 					else if(message.startsWith("/a/")) {
-						System.out.println("client : new player added");
+						System.out.println("client : new player added : "+message);
 						String msg=message.substring(3, message.length());
 						NewClientAdded(msg);
 					}
@@ -103,10 +103,19 @@ public class Client implements Runnable {
 	}
 	
 	private void NewClientAdded(String message) {
-		String[] msg = message.split("/y/");
+		String[] msg = message.split("/-/");
+		System.out.println(msg.length);
 		String name= msg[0];
 		int ID=Integer.parseInt(msg[1]);
-		game.game.AddNewPlayer(name, ID, false);
+		System.out.println("client ID : "+ID);
+		
+		if(this.ID==ID) {
+			game.OnSuccessfullConnection(name, ID, true);
+		}
+		else {
+			game.game.AddNewPlayer(name, ID, false);
+//			game.OnSuccessfullConnection(name, ID, false);
+		}
 	}
 	
 	public boolean openConnection(String address, int port) {
@@ -167,7 +176,7 @@ public class Client implements Runnable {
 			return null;
 		}
 		String msg=new String(data);
-		return msg;
+		return msg.substring(0, packet.getLength());
 	}
 	
 	public void close() {
